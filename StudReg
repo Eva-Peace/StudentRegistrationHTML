@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<title>Student Registration System</title>
+
+<style>
+
+  /* Base reset and styles */
+
+  * {
+
+    box-sizing: border-box;
+
+  }
+
+  body {
+
+    margin: 0; padding: 12px;
+
+    background: #f0f4f8;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    color: #222;
+
+    display: flex; justify-content: center; align-items: flex-start;
+
+    min-height: 100vh;
+
+    -webkit-font-smoothing: antialiased;
+
+  }
+
+  #container {
+
+    background: white;
+
+    border-radius: 14px;
+
+    box-shadow: 0 9px 26px rgba(0,0,0,0.1);
+
+    width: 100%;
+
+    max-width: 350px;
+
+    max-height: 600px;
+
+    overflow-y: auto;
+
+    padding: 24px 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+  }
+
+  h1 {
+
+    text-align: center;
+
+    color: #0078d7;
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+
+    user-select: none;
+
+  }
+
+  form {
+
+    display: flex;
+
+    flex-direction: column;
+
+  }
+
+  label {
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+
+    margin-top: 14px;
+
+    font-size: 0.95rem;
+
+  }
+
+  input[type="text"],
+
+  input[type="email"],
+
+  input[type="date"],
+
+  select {
+
+    padding: 10px 14px;
+
+    font-size: 1rem;
+
+    border: 1.8px solid #cbd2d9;
+
+    border-radius: 7px;
+
+    transition: border-color 0.3s ease;
+
+  }
+
+  input[type="text"]:focus,
+
+  input[type="email"]:focus,
+
+  input[type="date"]:focus,
+
+  select:focus {
+
+    outline: none;
+
+    border-color: #0078d7;
+
+  }
+
+  .radio-group {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 6px;
+
+  }
+
+  .radio-group label {
+
+    font-weight: normal;
+
+    font-size: 0.9rem;
+
+  }
+
+  button {
+
+    margin-top: 22px;
+
+    padding: 14px;
+
+    background-color: #0078d7;
+
+    color: white;
+
+    font-weight: 700;
+
+    font-size: 1.1rem;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+
+    user-select: none;
+
+  }
+
+  button:hover,
+
+  button:focus {
+
+    background-color: #005ea2;
+
+    outline: none;
+
+  }
+
+  #message {
+
+    margin-top: 14px;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    min-height: 22px;
+
+    user-select: none;
+
+  }
+
+  #message.error {
+
+    color: #d93025;
+
+  }
+
+  #message.success {
+
+    color: #188038;
+
+  }
+
+  #student-list {
+
+    margin-top: 28px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+  }
+
+  table {
+
+    border-collapse: collapse;
+
+    width: 100%;
+
+    font-size: 0.9rem;
+
+  }
+
+  thead {
+
+    background-color: #0078d7;
+
+    color: white;
+
+  }
+
+  th, td {
+
+    padding: 8px 10px;
+
+    border: 1.5px solid #cbd2d9;
+
+    text-align: left;
+
+  }
+
+  tbody tr:nth-child(even) {
+
+    background-color: #f4f9ff;
+
+  }
+
+  #clear-btn {
+
+    margin: 20px auto 0 auto;
+
+    padding: 8px 18px;
+
+    font-weight: 600;
+
+    font-size: 0.9rem;
+
+    border-radius: 8px;
+
+    background-color: #d93025;
+
+    border: none;
+
+    color: white;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition: background-color 0.3s ease;
+
+    max-width: 160px;
+
+  }
+
+  #clear-btn:hover,
+
+  #clear-btn:focus {
+
+    background-color: #a8201a;
+
+    outline: none;
+
+  }
+
+  @media (max-width: 400px) {
+
+    #container {
+
+      max-width: 100%;
+
+      border-radius: 0;
+
+      box-shadow: none;
+
+      max-height: 100vh;
+
+    }
+
+  }
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container" role="main" aria-live="polite">
+
+  <h1>Student Registration</h1>
+
+  <form id="registration-form" aria-label="Student registration form" novalidate>
+
+    <label for="name">Full Name *</label>
+
+    <input type="text" id="name" name="name" required placeholder="John Doe" aria-required="true" minlength="3" autocomplete="name" />
+
+
+    <label for="email">Email Address *</label>
+
+    <input type="email" id="email" name="email" required placeholder="email@example.com" aria-required="true" autocomplete="email" />
+
+
+    <label for="dob">Date of Birth *</label>
+
+    <input type="date" id="dob" name="dob" required aria-required="true" max="" />
+
+
+    <label for="course">Course *</label>
+
+    <select id="course" name="course" required aria-required="true">
+
+      <option value="" disabled selected>Select a course</option>
+
+      <option value="computer-science">Computer Science</option>
+
+      <option value="business">Business</option>
+
+      <option value="engineering">Engineering</option>
+
+      <option value="literature">Literature</option>
+
+      <option value="psychology">Psychology</option>
+
+    </select>
+
+
+    <label>Gender *</label>
+
+    <div class="radio-group" role="radiogroup" aria-required="true" aria-labelledby="gender-group-label">
+
+      <label><input type="radio" name="gender" value="Male" required /> Male</label>
+
+      <label><input type="radio" name="gender" value="Female" /> Female</label>
+
+      <label><input type="radio" name="gender" value="Other" /> Other</label>
+
+    </div>
+
+
+    <button type="submit" aria-label="Submit registration form">Register</button>
+
+    <div id="message" role="alert" aria-live="assertive"></div>
+
+  </form>
+
+
+  <section id="student-list" aria-label="Registered students list" hidden>
+
+    <h2 style="text-align:center; color:#0078d7; margin-bottom: 12px; user-select:none;">Registered Students</h2>
+
+    <table aria-describedby="student-count">
+
+      <thead>
+
+        <tr>
+
+          <th scope="col">Name</th>
+
+          <th scope="col">Email</th>
+
+          <th scope="col">DOB</th>
+
+          <th scope="col">Course</th>
+
+          <th scope="col">Gender</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="students-tbody"></tbody>
+
+    </table>
+
+    <button id="clear-btn" aria-label="Clear all registered students">Clear List</button>
+
+  </section>
+
+</div>
+
+<script>
+
+  // Set max date for DOB input to today to prevent future date selection
+
+  const dobInput = document.getElementById('dob');
+
+  const today = new Date();
+
+  dobInput.max = today.toISOString().split('T')[0];
+
+
+  const form = document.getElementById('registration-form');
+
+  const messageDiv = document.getElementById('message');
+
+  const studentListSection = document.getElementById('student-list');
+
+  const studentsTbody = document.getElementById('students-tbody');
+
+  const clearBtn = document.getElementById('clear-btn');
+
+
+  const STORAGE_KEY = 'registeredStudents';
+
+
+  function showMessage(text, isError = false) {
+
+    messageDiv.textContent = text;
+
+    if (isError) {
+
+      messageDiv.classList.add('error');
+
+      messageDiv.classList.remove('success');
+
+    } else {
+
+      messageDiv.classList.add('success');
+
+      messageDiv.classList.remove('error');
+
+    }
+
+  }
+
+
+  // Retrieve students from storage or empty array
+
+  function getStudents() {
+
+    const data = localStorage.getItem(STORAGE_KEY);
+
+    return data ? JSON.parse(data) : [];
+
+  }
+
+
+  // Save students array to storage
+
+  function saveStudents(students) {
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+
+  }
+
+
+  // Render students table rows
+
+  function renderStudents() {
+
+    const students = getStudents();
+
+    studentsTbody.innerHTML = '';
+
+    if (students.length === 0) {
+
+      studentListSection.hidden = true;
+
+      return;
+
+    }
+
+    studentListSection.hidden = false;
+
+    for (const s of students) {
+
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+
+        <td>${escapeHTML(s.name)}</td>
+
+        <td>${escapeHTML(s.email)}</td>
+
+        <td>${escapeHTML(s.dob)}</td>
+
+        <td>${escapeHTML(s.course)}</td>
+
+        <td>${escapeHTML(s.gender)}</td>
+
+      `;
+
+      studentsTbody.appendChild(tr);
+
+    }
+
+  }
+
+
+  // Simple escaping to prevent XSS from stored data
+
+  function escapeHTML(str) {
+
+    return str.replace(/[&<>"']/g, (match) => {
+
+      const escapeMap = {
+
+        '&': '&amp;',
+
+        '<': '&lt;',
+
+        '>': '&gt;',
+
+        '"': '&quot;',
+
+        "'": '&#39;'
+
+      };
+
+      return escapeMap[match];
+
+    });
+
+  }
+
+
+  // Form validation helper
+
+  function validateForm(data) {
+
+    if (!data.name || data.name.length < 3) {
+
+      return 'Full name must be at least 3 characters.';
+
+    }
+
+    // Basic email pattern
+
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+    if (!emailPattern.test(data.email)) {
+
+      return 'Please enter a valid email address.';
+
+    }
+
+    if (!data.dob) {
+
+      return 'Please enter date of birth.';
+
+    }
+
+    if (new Date(data.dob) > new Date()) {
+
+      return 'Date of birth cannot be in the future.';
+
+    }
+
+    if (!data.course) {
+
+      return 'Please select a course.';
+
+    }
+
+    if (!data.gender) {
+
+      return 'Please select gender.';
+
+    }
+
+    return null;
+
+  }
+
+
+  // On form submit
+
+  form.addEventListener('submit', e => {
+
+    e.preventDefault();
+
+    messageDiv.textContent = '';
+
+
+    // Collect form data
+
+    const formData = {
+
+      name: form.name.value.trim(),
+
+      email: form.email.value.trim(),
+
+      dob: form.dob.value,
+
+      course: form.course.value,
+
+      gender: form.gender.value
+
+    };
+
+
+    // Validate
+
+    const validationError = validateForm(formData);
+
+    if (validationError) {
+
+      showMessage(validationError, true);
+
+      return;
+
+    }
+
+
+    // Save student
+
+    const students = getStudents();
+
+    students.push(formData);
+
+    saveStudents(students);
+
+    renderStudents();
+
+
+    showMessage('Registration successful!', false);
+
+
+    form.reset();
+
+  });
+
+
+  // Clear registered students list
+
+  clearBtn.addEventListener('click', () => {
+
+    if (confirm('Are you sure you want to clear all registered students?')) {
+
+      localStorage.removeItem(STORAGE_KEY);
+
+      renderStudents();
+
+      showMessage('Student list cleared.', false);
+
+    }
+
+  });
+
+
+  // Initialize
+
+  renderStudents();
+
+</script>
+
+</body>
+
+</html>
